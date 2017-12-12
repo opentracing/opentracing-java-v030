@@ -62,7 +62,7 @@ public final class AutoFinishTracerShimTest {
         try {
             span = shim.buildSpan("one").startActive();
             assertNotNull(span);
-            assertNotNull(shim.activeSpan());
+            assertEquals(span, shim.activeSpan());
             assertEquals(0, mockTracer.finishedSpans().size());
         } finally {
             span.deactivate();

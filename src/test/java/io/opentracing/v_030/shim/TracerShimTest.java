@@ -65,7 +65,7 @@ public final class TracerShimTest {
         try {
             span = shim.buildSpan("one").startActive();
             assertNotNull(span);
-            assertNotNull(shim.activeSpan());
+            assertEquals(span, shim.activeSpan());
             assertEquals(0, mockTracer.finishedSpans().size());
         } finally {
             span.deactivate();
@@ -109,7 +109,7 @@ public final class TracerShimTest {
         try {
             active = shim.makeActive(span);
             assertNotNull(active);
-            assertNotNull(shim.activeSpan());
+            assertEquals(active, shim.activeSpan());
             assertEquals(0, mockTracer.finishedSpans().size());
         } finally {
             active.deactivate();

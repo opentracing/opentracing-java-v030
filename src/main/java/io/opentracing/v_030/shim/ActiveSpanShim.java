@@ -121,6 +121,14 @@ public class ActiveSpanShim implements ActiveSpan, SpanWrapper {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof ActiveSpanShim))
+            return false;
+
+        return scope.equals(((ActiveSpanShim)obj).scope());
+    }
+
+    @Override
     public String toString() {
         return scope.span().toString();
     }

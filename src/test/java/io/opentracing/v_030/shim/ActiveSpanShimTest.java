@@ -29,6 +29,8 @@ import io.opentracing.v_030.tag.Tags;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -112,4 +114,14 @@ public class ActiveSpanShimTest {
         assertEquals("shim", tags.get(Tags.COMPONENT.getKey()));
     }
 
+    @Test
+    public void equalsSpan() {
+        io.opentracing.Scope scope = mockTracer.buildSpan("one").startActive();
+        ActiveSpan spanShim = new ActiveSpanShim(scope);
+
+        assertFalse(spanShim.equals(null));
+        assertFalse(spanShim.equals("string"));
+        assertFalse(spanShim.equals(mockTracer.buildSpan("two").startActive()));
+        assertTrue(spanShim.equals(new ActiveSpanShim(scope)));
+    }
 }

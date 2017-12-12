@@ -107,6 +107,14 @@ public class SpanShim implements Span, SpanWrapper {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof SpanShim))
+            return false;
+
+        return span.equals(((SpanShim)obj).span);
+    }
+
+    @Override
     public String toString() {
         return span.toString();
     }
