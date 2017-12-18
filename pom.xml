@@ -41,7 +41,9 @@
     <assertj.version>3.8.0</assertj.version>
 
     <!-- plugins -->
+    <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     <centralsync-maven-plugin.version>0.1.0</centralsync-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
     <takari-maven.version>0.3.4</takari-maven.version>
     <license-maven-plugin.version>3.0</license-maven-plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
@@ -265,6 +267,25 @@
           <repo>maven</repo>
           <packageName>opentracing-v030</packageName>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>${coveralls-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
