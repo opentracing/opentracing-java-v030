@@ -1,3 +1,5 @@
+[![Build Status][ci-img]][ci]
+
 # OpenTracing-Java 0.30 compatibility layer.
 
 The `opentracing-v030` artifact provides a 0.30 API compatibility layer which comprises:
@@ -75,3 +77,5 @@ The returned `ActiveSpanShim` instance must react properly to `ActiveSpan.captur
 
 See [Contributing](CONTRIBUTING.md) for matters such as license headers.
 
+  [ci-img]: https://travis-ci.org/opentracing/opentracing-java-v030.svg?branch=master
+  [ci]: https://travis-ci.org/opentracing/opentracing-java-v030
