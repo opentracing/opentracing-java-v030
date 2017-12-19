@@ -1,0 +1,50 @@
+# Run `travis lint` when changing this file to avoid breaking the build.
+# Default JDK is really old: 1.8.0_31; Trusty's is less old: 1.8.0_51
+# https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
+sudo: false
+dist: trusty
+
+cache:
+  directories:
+  - $HOME/.m2
+
+language: java
+
+jdk:
+  - oraclejdk8
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+before_install:
+  # allocate commits to CI, not the owner of the deploy key
+  - git config user.name "opentracingci"
+  - git config user.email "opentracingci+opentracing@googlegroups.com"
+  # setup https authentication credentials, used by ./mvnw release:prepare
+  - git config credential.helper "store --file=.git/credentials"
+  - echo "https://$GH_TOKEN:@github.com" > .git/credentials
+
+install:
+  # Override default travis to use the maven wrapper
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script:
+  - ./travis/publish.sh
+
+branches:
+  except:
+    - /^[0-9]/
+
+after_success:
+  - mvn jacoco:report coveralls:report
+
+env:
+  global:
+   # Ex. travis encrypt BINTRAY_USER=your_github_account
+   - secure: "vEzw52TieEtIq5fZNxgOW0eP/GXse2jLW5+LAKi5kwpux5FZAmWEylAL2LcMab7+CgF9BF2bGhqBLEAmbrXytr+uqqP1sDtHJES+eLrHb6ykBVnhAi49dXyw4/OSJs2UPbiG5pajA+iKBNWBD5clba2qjvc5c5xf1REv1fRtSqlEC1WmhXLdU2wE3s3pSiY/YqiOk14Z5Px7CS64HKPI4N5YJq7aafGpqngfKnc5hsT3pySPFXigAiPA5SJsKI8v1RkP4IvAtGwo1eg+YsNWTtqBrevf5SPJmHxnfdNu6qBQeOqf4uo9cCK5RZkCnW8XpqIlt04ZIzZ620Uj+FG2iYZgvFI5IEuS2fLel23qLEbMrfSOpWq2uda6rgYgtcQOZ41xeOf1Pyj/qbBNnXCR/A8JL/+EFmtTnnplPbXEKhMVsByjJ1EwlhiZm3D95U72XMPQx8tm9665SQmkohW61XJUJFa3T1MVGjcSvea2N4PrjlgtUbVLJhBQfl6V+hIr5dC1dJLfBkJu3hipYvnxAS8YawiuacAmb0eybhGLXBkteMXBBNCZDSsup7wfngh8KNKQnv78Sbe5Ppww3lUq/DV8batShBcm256llGzj2xlmAUkBOxDna4m7sXbvlJTYynJB3nCHxS/OpFw8X0UMZzoLX3qcH+VcbeLs4MrkG1M="
+   # Ex. travis encrypt BINTRAY_KEY=xxx-https://bintray.com/profile/edit-xxx --add
+   - secure: "bKj0XnoxMym8p2SQemluQKRrjrENBrKn2czQE5cSmOOhkP0yfeCr7xu18i0yoKaZoq6J4xi5uF8wg9LlSJzmxipB50T8g/ciY2nxEZAR3yH8/yoRcwAf6eqWRGbo1CBllrtinClc0zH3k6BbhAb6fO9kJJpn7M2dxFGA528LgswRvFW448EQFNgv6hydU2Q36T7O+BEN4+cX6M3bZvYOKX39WeQ+gVzxsdP6CxTKZSKKOTWvBGN8E+S4EIwRNfwD1aFFRbLpnf9K1HXMW9Akoy8RDVejGlNaAFUNkR6XoIl5BzdICrB03iiBUfczULokTbzVVe9/Y15YN5B1wq3UDj8EtKwGWldQ5s/dgeOkM8vSJh2UxXIG3q7jnNKf19Euaoc1mfM12MQHzqw8NSQyXCknBMZGD+hZI+Rr4VGsmp8GTuUfpgt3xYpXacu9zNXalsCfEuarv1FDxB76gIvC1TEoD3ytn5GL2KR0vQEZvAMOlIR0ux8cct1oUOmeIOtoyoIlBQKnCNvyhmpPqhqUQC5Nl3tjucAUPVeBRl7tdc6XItDC3nkqTJ8mwYMTYw3xn2ruFbZ10Wi4hRqyMwwu9Z8tKBvV+U1dzX5wHrPiU71dHN3riDK/EluAcNrXD7x4gHOVb5HTFk2KwpG6V41N/rqs23xcgL0VMxr1E9K1Ods="
+   # Ex. travis encrypt GH_TOKEN=XXX-https://github.com/settings/tokens-XXX --add
+   - secure: "gP1GpqNh6EWjx+wua8b6+pvRuon9tQBL1lMz6Y4hinjDemhokYGjwxq5bzkWVGVNfHx/6oUtgZjq2Y+T2Vd4ajluL34ZXPPQQz1CJLRerdZ6Liqr2UVZBgunCOGG+GHKU8sJczzeCFfWveGQTieku7oGztJ74YbX/h06yCY1oIZLEcjj9uAO/ea+IAIw6VKAFcDxjNUdljwlZEgO5QtwIIXoXLOUfKk660yE1EN7riVfkwHP3fzgJDpCfxJhJ7EcR/LTnTMp8tQO0dnwVFCip54cVZW0l9uDHrk7wp5bXTdpxMv5JpHC7z5wH3AlPEdp9HoBXjlGLyescyqZWOZ9fJBxBm+86Kg5joK+KY2m+v5yJ8hJigSvOxK1Jp3tWijFTnLBc6VQeaH54Ebvq4KhJ9YKECEUgC41UQT4zVebeqQeE6OpMmr2zl6M9s/18m1WFDthHX88RI4yLwV4JfauM0D8dTD3bvYiDQYIkIwCftAQUEG4/Laja4JNcJqTDc8GDvnoqd7h1yAscNGr6JvneHLBMHDjJTmIeVSPUw7ntg6q2LvZ/p7klWmK+tnMEv+N3eWlOOVWHgZGu+6T5FmHItM7LS+66afNfgir6Pz/tJJNNO+n5g/r+y1xxyTBGrCZSzqT92VJJEwRROqKz7Bs4BtvpBZD71sO4DfduH1zI4k="
