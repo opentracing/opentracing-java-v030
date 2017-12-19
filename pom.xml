@@ -90,7 +90,7 @@
   <distributionManagement>
     <repository>
       <id>bintray</id>
-      <url>https://api.bintray.com/maven/opentracing/maven/opentracing-v030/;publish=1</url>
+      <url>https://api.bintray.com/maven/opentracing/maven/opentracing-java-v030/;publish=1</url>
     </repository>
     <snapshotRepository>
       <id>jfrog-snapshots</id>
@@ -265,7 +265,7 @@
         <configuration>
           <subject>opentracing</subject>
           <repo>maven</repo>
-          <packageName>opentracing-v030</packageName>
+          <packageName>opentracing-java-v030</packageName>
         </configuration>
       </plugin>
 
