@@ -1,4 +1,4 @@
-[![Build Status][ci-img]][ci] [![Coverage Status][cov-img]][cov]
+[![Build Status][ci-img]][ci] [![Coverage Status][cov-img]][cov] [![Released Version][maven-img]][maven]
 
 # OpenTracing-Java 0.30 compatibility layer.
 
@@ -81,3 +81,5 @@ See [Contributing](CONTRIBUTING.md) for matters such as license headers.
   [ci]: https://travis-ci.org/opentracing/opentracing-java-v030
   [cov-img]: https://coveralls.io/repos/github/opentracing/opentracing-java-v030/badge.svg?branch=master
   [cov]: https://coveralls.io/github/opentracing/opentracing-java-v030?branch=master
+  [maven-img]: https://img.shields.io/maven-central/v/io.opentracing/opentracing-v030.svg
+  [maven]: http://search.maven.org/#search%7Cga%7C1%7Copentracing-v030
