@@ -38,6 +38,61 @@ try (ActiveSpan span = tracer.buildSpan("parent").startActive()) {
 }
 ```
 
+## Integration with existing instrumentation code.
+
+To support code being instrumented using the 0.30 API it is required to update the `import` statements (probably with the help of a refactoring tool) from `io.opentracing` to `io.opentracing.v_030`:
+
+```java
+import io.opentracing.v_030.Tracer; // Previously io.opentracing.Tracer
+import io.opentracing.v_030.Span; // Previously io.opentracing.Span
+```
+
+This is done as `io.opentracing` refers to the new 0.31 API. It is possible to keep both API versions working side by side with help of the Shim layer, allowing an incremental adoption of the new API:
+
+```java
+import io.opentracing.v_030.Tracer;
+
+io.opentracing.Tracer upstreamTracer = ...;
+Tracer tracer = new TracerShim(tracer);
+
+class Engine {
+    public void getResult(Object input) {
+        try (ActiveSpan span = tracer.buildSpan("engine-result").startActive()) {
+            Object proxyResult = proxyCall(input);
+	    // Do something with proxyResult...
+
+            span.setTag("processed-value", processedValue.toString());
+            return processedValue;
+        }
+    }
+
+    Object proxyCall(Object input) {
+        // Will implicitly use the active Span crated in getResult() as the active/parent Span.
+        try (Scope scope = upstreamTracer.buildSpan("engine-proxy-call").startActive(true)) {
+            Object result = library.invoke(input);
+            scope.span().setTag("proxy-value", result.toString());
+            return result;
+        }
+    }
+}
+```
+
+Instead of keeping both 0.30 and 0.31 `Tracers`s around, it's possible to register them using the `GlobalTracer` classes:
+
+```java
+void init() {
+    io.opentracing.Tracer upstreamTracer = ...;
+    io.opentracing.v_030.Tracer tracer = new TracerShim(upstreamTracer);
+
+    io.opentracing.util.GlobalTracer.register(upstreamTracer);
+    io.opentracing.v_030.util.GlobalTracer.register(tracer);
+}
+```
+
+Now both `GlobalTracer` instances will refer to the same `Tracer`, and can be used anywhere.
+
+For more information, see the [examples](https://github.com/opentracing/opentracing-java-v030/tree/master/examples).
+
 ## Extending the Shim layer
 
 When the Shim layer is required without the reference-count system, it's possible to provide a custom class extending `TracerShim`, which will need to provide a custom `ActiveSpanShim` instance upon `Span` activation:
