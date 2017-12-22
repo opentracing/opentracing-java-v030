@@ -57,10 +57,11 @@ Tracer tracer = new TracerShim(tracer);
 
 class Engine {
     public void getResult(Object input) {
-        try (ActiveSpan span = tracer.buildSpan("engine-result").startActive(true)) {
+        try (ActiveSpan span = tracer.buildSpan("engine-result").startActive()) {
             Object proxyResult = proxyCall(input);
 	    // Do something with proxyResult...
-            span.setTag("processed-value", processedValue);
+
+            span.setTag("processed-value", processedValue.toString());
             return processedValue;
         }
     }
@@ -69,7 +70,7 @@ class Engine {
         // Will implicitly use the active Span crated in getResult() as the active/parent Span.
         try (Scope scope = upstreamTracer.buildSpan("engine-proxy-call").startActive(true)) {
             Object result = library.invoke(input);
-            scope.span().setTag("proxy-value", result);
+            scope.span().setTag("proxy-value", result.toString());
             return result;
         }
     }
@@ -90,7 +91,7 @@ void init() {
 
 Now both `GlobalTracer` instances will refer to the same `Tracer`, and can be used anywhere.
 
-For more information, see the examples directory.
+For more information, see the [examples](https://github.com/opentracing/opentracing-java-v030/tree/master/examples).
 
 ## Extending the Shim layer
 
