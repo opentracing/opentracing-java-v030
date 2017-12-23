@@ -39,7 +39,7 @@ public class AutoFinishScopeTest {
         Span span = mock(Span.class);
 
         // Quasi try-with-resources (this is 1.6).
-        AutoFinishScope active = (AutoFinishScope)manager.activate(span);
+        AutoFinishScope active = (AutoFinishScope)manager.activate(span, true);
         AutoFinishScope.Continuation continued = null;
         try {
             assertNotNull(active);
@@ -72,12 +72,12 @@ public class AutoFinishScopeTest {
         Span foregroundSpan = mock(Span.class);
 
         // Quasi try-with-resources (this is 1.6).
-        Scope backgroundActive = manager.activate(backgroundSpan);
+        Scope backgroundActive = manager.activate(backgroundSpan, true);
         try {
             assertNotNull(backgroundActive);
 
             // Activate a new Scope on top of the background one.
-            Scope foregroundActive = manager.activate(foregroundSpan);
+            Scope foregroundActive = manager.activate(foregroundSpan, true);
             try {
                 Scope shouldBeForeground = manager.active();
                 assertEquals(foregroundActive, shouldBeForeground);
@@ -105,8 +105,8 @@ public class AutoFinishScopeTest {
     public void testDeactivateWhenDifferentSpanIsActive() {
         Span span = mock(Span.class);
 
-        Scope active = manager.activate(span);
-        manager.activate(mock(Span.class));
+        Scope active = manager.activate(span, true);
+        manager.activate(mock(Span.class), true);
         active.close();
 
         verify(span, times(0)).finish();

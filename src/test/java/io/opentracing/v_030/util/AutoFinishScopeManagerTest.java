@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class AutoFinishScopeManagerTest {
@@ -40,7 +41,7 @@ public class AutoFinishScopeManagerTest {
         Span span = mock(Span.class);
 
         // We can't use 1.7 features like try-with-resources in this repo without meddling with pom details for tests.
-        Scope active = source.activate(span);
+        Scope active = source.activate(span, true);
         try {
             assertNotNull(active);
             Scope otherScope = source.active();
@@ -56,5 +57,4 @@ public class AutoFinishScopeManagerTest {
         Scope missingSpan = source.active();
         assertNull(missingSpan);
     }
-
 }

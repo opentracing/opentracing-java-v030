@@ -61,7 +61,7 @@ public class TracerShim implements Tracer {
         checkArgumentNotNull(span, "span");
 
         io.opentracing.Span wrappedSpan = ((SpanWrapper)span).span();
-        return createActiveSpanShim(tracer.scopeManager().activate(wrappedSpan));
+        return createActiveSpanShim(tracer.scopeManager().activate(wrappedSpan, true));
     }
 
     @Override
@@ -148,7 +148,7 @@ public class TracerShim implements Tracer {
 
         @Override
         public ActiveSpan startActive() {
-            Scope scope = builder.startActive();
+            Scope scope = builder.startActive(true);
             return createActiveSpanShim(scope);
         }
 

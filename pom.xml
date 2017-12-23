@@ -35,7 +35,7 @@
 
     <main.basedir>${project.basedir}</main.basedir>
 
-    <io.opentracing.version>0.31.0-RC1</io.opentracing.version>
+    <io.opentracing.version>0.31.0-RC2</io.opentracing.version>
     <junit.version>4.12</junit.version>
     <mockito.version>1.10.19</mockito.version>
     <assertj.version>3.8.0</assertj.version>

@@ -80,7 +80,7 @@ public final class TracerShimTest {
     public void activeSpanOnTheSide() {
         Scope scope = null;
         try {
-            scope = mockTracer.buildSpan("one").startActive();
+            scope = mockTracer.buildSpan("one").startActive(true);
             assertNotNull(shim.activeSpan());
         } finally {
             scope.close();

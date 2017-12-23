@@ -116,12 +116,12 @@ public class ActiveSpanShimTest {
 
     @Test
     public void equalsSpan() {
-        io.opentracing.Scope scope = mockTracer.buildSpan("one").startActive();
+        io.opentracing.Scope scope = mockTracer.buildSpan("one").startActive(true);
         ActiveSpan spanShim = new ActiveSpanShim(scope);
 
         assertFalse(spanShim.equals(null));
         assertFalse(spanShim.equals("string"));
-        assertFalse(spanShim.equals(mockTracer.buildSpan("two").startActive()));
+        assertFalse(spanShim.equals(mockTracer.buildSpan("two").startActive(true)));
         assertTrue(spanShim.equals(new ActiveSpanShim(scope)));
     }
 }
