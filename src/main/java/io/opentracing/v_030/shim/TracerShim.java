@@ -75,13 +75,13 @@ public class TracerShim implements Tracer {
 
         tracer.inject(((SpanContextShim)spanContext).context(),
                 FormatConverter.toUpstreamFormat(format),
-                FormatConverter.toUpstreamCarrier(format, carrier));
+                FormatConverter.toUpstreamInjectCarrier(format, carrier));
     }
 
     @Override
     public <C> SpanContext extract(Format<C> format, C carrier) {
         io.opentracing.SpanContext context = tracer.extract(FormatConverter.toUpstreamFormat(format),
-                FormatConverter.toUpstreamCarrier(format, carrier));
+                FormatConverter.toUpstreamExtractCarrier(format, carrier));
         return new SpanContextShim(context);
     }
 
