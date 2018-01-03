@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 The OpenTracing Authors
+ * Copyright 2016-2018 The OpenTracing Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -44,6 +44,10 @@ final class FormatConverter {
     }
 
     public static <C> Object toUpstreamExtractCarrier(Format format, C carrier) {
+        if (carrier == null) {
+            return null;
+        }
+
         if (format == Format.Builtin.TEXT_MAP || format == Format.Builtin.HTTP_HEADERS) {
             return new TextMapUpstreamShim((TextMap)carrier);
         }
@@ -56,6 +60,10 @@ final class FormatConverter {
     }
 
     public static <C> Object toUpstreamInjectCarrier(Format format, C carrier) {
+        if (carrier == null) {
+            return null;
+        }
+
         if (format == Format.Builtin.TEXT_MAP || format == Format.Builtin.HTTP_HEADERS) {
             return new TextMapUpstreamShim((TextMap)carrier);
         }

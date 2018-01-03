@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 The OpenTracing Authors
+ * Copyright 2016-2018 The OpenTracing Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -195,6 +195,51 @@ public final class TracerShimTest {
             excThrown = true;
         }
 
+        assertTrue(excThrown);
+    }
+
+    @Test
+    public void injectExtractNullFormat() {
+        Span span = shim.buildSpan("parent").startManual();
+        span.finish();
+
+        Map<String, String> map = new HashMap<String, String>();
+        boolean excThrown = false;
+        try {
+            shim.inject(span.context(), null, new TextMapInjectAdapter(map));
+        } catch (IllegalArgumentException e) {
+            excThrown = true;
+        }
+        assertTrue(excThrown);
+
+        excThrown = false;
+        try {
+            shim.extract(null, new TextMapExtractAdapter(map));
+        } catch (IllegalArgumentException e) {
+            excThrown = true;
+        }
+        assertTrue(excThrown);
+    }
+
+    @Test
+    public void injectExtractNullCarrier() {
+        Span span = shim.buildSpan("parent").startManual();
+        span.finish();
+
+        boolean excThrown = false;
+        try {
+            shim.inject(span.context(), Format.Builtin.HTTP_HEADERS, null);
+        } catch (IllegalArgumentException e) {
+            excThrown = true;
+        }
+        assertTrue(excThrown);
+
+        excThrown = false;
+        try {
+            shim.extract(Format.Builtin.HTTP_HEADERS, null);
+        } catch (IllegalArgumentException e) {
+            excThrown = true;
+        }
         assertTrue(excThrown);
     }
 
