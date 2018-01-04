@@ -40,11 +40,11 @@ public class TracerShim implements Tracer {
     }
 
     protected ActiveSpanShim createActiveSpanShim(Scope scope) {
-        return new ActiveSpanShim(scope);
+        return new SimpleActiveSpanShim(scope);
     }
 
     protected SpanShim createSpanShim(io.opentracing.Span span) {
-        return new SpanShim(span);
+        return new SimpleSpanShim(span);
     }
 
     @Override
@@ -83,6 +83,18 @@ public class TracerShim implements Tracer {
         io.opentracing.SpanContext context = tracer.extract(FormatConverter.toUpstreamFormat(format),
                 FormatConverter.toUpstreamExtractCarrier(format, carrier));
         return new SpanContextShim(context);
+    }
+
+    private final static class SimpleActiveSpanShim extends ActiveSpanShim {
+        public SimpleActiveSpanShim(io.opentracing.Scope scope) {
+            super(scope);
+        }
+    }
+
+    private final static class SimpleSpanShim extends SpanShim {
+        public SimpleSpanShim(io.opentracing.Span span) {
+            super(span);
+        }
     }
 
     private final class SpanBuilderShim implements Tracer.SpanBuilder {
