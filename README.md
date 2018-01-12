@@ -27,7 +27,7 @@ Tracer tracer = new TracerShim(yourUpstreamTracer);
 import io.opentracing.v_030.ActiveSpan;
 import io.opentracing.v_030.Tracer;
 import io.opentracing.v_030.shim.AutoFinishTracerShim;
-import io.opentracing.v_030.util.AutoFinishScopeManager;
+import io.opentracing.util.AutoFinishScopeManager;
 
 io.opentracing.Tracer upstreamTracer = new CustomTracer(..., new AutoFinishScopeManager());
 Tracer tracer = new TracerShim(yourUpstreamTracer);
