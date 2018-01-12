@@ -16,7 +16,6 @@ package io.opentracing.v_030.shim;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 
-import io.opentracing.propagation.Adapters;
 import io.opentracing.v_030.SpanContext;
 import io.opentracing.v_030.Tracer;
 import io.opentracing.v_030.propagation.Format;
@@ -51,10 +50,6 @@ final class FormatConverter {
         if (format == Format.Builtin.TEXT_MAP || format == Format.Builtin.HTTP_HEADERS) {
             return new TextMapUpstreamShim((TextMap)carrier);
         }
-        if (format == Format.Builtin.BINARY) {
-            ByteBufferInputStream stream = new ByteBufferInputStream((ByteBuffer)carrier);
-            return Adapters.extractBinary(Channels.newChannel(stream));
-        }
 
         return carrier;
     }
@@ -66,10 +61,6 @@ final class FormatConverter {
 
         if (format == Format.Builtin.TEXT_MAP || format == Format.Builtin.HTTP_HEADERS) {
             return new TextMapUpstreamShim((TextMap)carrier);
-        }
-        if (format == Format.Builtin.BINARY) {
-            ByteBufferOutputStream stream = new ByteBufferOutputStream((ByteBuffer)carrier);
-            return Adapters.injectBinary(Channels.newChannel(stream));
         }
 
         return carrier;
