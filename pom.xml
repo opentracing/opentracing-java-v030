@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2016-2017 The OpenTracing Authors
+    Copyright 2016-2018 The OpenTracing Authors
 
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
     in compliance with the License. You may obtain a copy of the License at
@@ -35,7 +35,7 @@
 
     <main.basedir>${project.basedir}</main.basedir>
 
-    <io.opentracing.version>0.31.0-RC2</io.opentracing.version>
+    <io.opentracing.version>0.31.0</io.opentracing.version>
     <junit.version>4.12</junit.version>
     <mockito.version>1.10.19</mockito.version>
     <assertj.version>3.8.0</assertj.version>

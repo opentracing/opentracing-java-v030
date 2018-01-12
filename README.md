@@ -93,14 +93,7 @@ Now both `GlobalTracer` instances will refer to the same `Tracer`, and can be us
 
 ### Formats
 
-The builtin `TEXT_MAP`, `HTTP_HEADERS` and `BINARY` formats will be automatically translated by the Shim layer. For the `BINARY` case, though, as the API changed between 0.30 and 0.31, it needs special care, as the provided carrier for `Tracer.inject()` needs to be able to hold the entire data, or else a `java.nio.BufferOverflowException` will be thrown:
-
-```java
-ByteBuffer buff = ByteBuffer.allocate(128); // Allocate enough space.
-shim.inject(span.context(), Format.Builtin.BINARY, buff);
-```
-
-For more information, see the [examples](https://github.com/opentracing/opentracing-java-v030/tree/master/examples).
+The builtin `TEXT_MAP`, `HTTP_HEADERS` and `BINARY` formats will be automatically translated by the Shim layer. No support exist for custom formats at the moment, however.
 
 ## Extending the Shim layer
 

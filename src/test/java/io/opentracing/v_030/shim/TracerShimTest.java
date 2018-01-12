@@ -29,8 +29,6 @@ import io.opentracing.v_030.propagation.Format;
 import io.opentracing.v_030.propagation.TextMapExtractAdapter;
 import io.opentracing.v_030.propagation.TextMapInjectAdapter;
 
-import java.nio.ByteBuffer;
-import java.nio.BufferOverflowException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -152,50 +150,6 @@ public final class TracerShimTest {
         List<MockSpan> finishedSpans = mockTracer.finishedSpans();
         assertEquals(2, finishedSpans.size());
         assertEquals(finishedSpans.get(0).context().traceId(), finishedSpans.get(1).context().traceId());
-    }
-
-    @Test
-    public void injectExtractBinary() {
-        MockTracer mockTracer = new MockTracer(new ThreadLocalScopeManager(),
-            Propagator.BINARY);
-        Tracer shim = new TracerShim(mockTracer);
-
-        int startPosition = 32; // Make sure we don't read ALL the ByteBuffer.
-        ByteBuffer buff = ByteBuffer.allocate(128);
-        buff.position(startPosition);
-
-        Span span = shim.buildSpan("parent").startManual();
-        span.finish();
-        shim.inject(span.context(), Format.Builtin.BINARY, buff);
-
-        buff.position(startPosition); // Reset the position
-        SpanContext extract = shim.extract(Format.Builtin.BINARY, buff);
-        shim.buildSpan("child").asChildOf(extract).startManual().finish();
-
-        List<MockSpan> finishedSpans = mockTracer.finishedSpans();
-        assertEquals(2, finishedSpans.size());
-        assertEquals(finishedSpans.get(0).context().traceId(), finishedSpans.get(1).context().traceId());
-    }
-
-    @Test
-    public void injectExtractBinaryOverflow() {
-        MockTracer mockTracer = new MockTracer(new ThreadLocalScopeManager(),
-            Propagator.BINARY);
-        Tracer shim = new TracerShim(mockTracer);
-
-        ByteBuffer buff = ByteBuffer.allocate(0);
-
-        Span span = shim.buildSpan("parent").startManual();
-        span.finish();
-
-        boolean excThrown = false;
-        try {
-            shim.inject(span.context(), Format.Builtin.BINARY, buff);
-        } catch (BufferOverflowException e) {
-            excThrown = true;
-        }
-
-        assertTrue(excThrown);
     }
 
     @Test
