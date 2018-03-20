@@ -130,6 +130,10 @@ public class CustomTracerShim extends TracerShim {
 
 The returned `ActiveSpanShim` instance must react properly to `ActiveSpan.capture()` and return a `ActiveSpan.Continuation` object than can later be reactivated. Observe the default implementation of `ActiveSpanShim.capture()` throws `UnsupportedOperationException`.
 
+## License
+
+By contributing to OpenTracing java v030 repository, you agree that your contributions will be licensed under its [Apache 2.0 License]
+
 ## Contributing
 
 See [Contributing](CONTRIBUTING.md) for matters such as license headers.
