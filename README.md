@@ -93,7 +93,7 @@ Now both `GlobalTracer` instances will refer to the same `Tracer`, and can be us
 
 ### Formats
 
-The builtin `TEXT_MAP`, `HTTP_HEADERS` and `BINARY` formats will be automatically translated by the Shim layer. No support exist for custom formats at the moment, however.
+The builtin `TEXT_MAP`, `HTTP_HEADERS` and `BINARY` formats will be automatically translated by the Shim layer. No support exists for custom formats at the moment, however.
 
 ## Extending the Shim layer
 
