@@ -143,4 +143,4 @@ See [Contributing](CONTRIBUTING.md) for matters such as license headers.
 
 ## License
 
-[Apache 2.0 License](./LICENSE).
+By contributing to OpenTracing documentation repository, you agree that your contributions will be licensed under its [Apache 2.0 License](./LICENSE).
