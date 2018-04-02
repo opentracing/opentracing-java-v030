@@ -140,3 +140,7 @@ See [Contributing](CONTRIBUTING.md) for matters such as license headers.
   [cov]: https://coveralls.io/github/opentracing/opentracing-java-v030?branch=master
   [maven-img]: https://img.shields.io/maven-central/v/io.opentracing/opentracing-v030.svg
   [maven]: http://search.maven.org/#search%7Cga%7C1%7Copentracing-v030
+
+## License
+
+By contributing to OpenTracing documentation repository, you agree that your contributions will be licensed under its [Apache 2.0 License](./LICENSE).
